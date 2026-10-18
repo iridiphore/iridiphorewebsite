@@ -5,6 +5,8 @@ import { cloudinaryConfigured, imageUrl, videoSources } from "@/lib/cloudinary";
 interface Props {
   video: string | null;
   poster: string | null;
+  /** Overlay darkness at the top, 0 to 90 (set in admin, Look tab). */
+  dim: number;
 }
 
 /**
@@ -12,7 +14,7 @@ interface Props {
  * then the video fade in on top. No video is requested if none is set or the visitor
  * prefers reduced motion (they get the poster instead).
  */
-export default function HeroVideo({ video, poster }: Props) {
+export default function HeroVideo({ video, poster, dim }: Props) {
   const [ready, setReady] = useState(false);
   const [reduced, setReduced] = useState(false);
 
@@ -47,7 +49,12 @@ export default function HeroVideo({ video, poster }: Props) {
         </video>
       )}
       {/* Keeps text legible over any footage */}
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/60 via-ink/20 to-ink" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `linear-gradient(to bottom, rgba(7,9,12,${dim / 100}), rgba(7,9,12,${dim / 300}), #07090c)`,
+        }}
+      />
     </div>
   );
 }

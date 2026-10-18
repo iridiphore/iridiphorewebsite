@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useSearchParams } from "react-router-dom";
+import { fillEmail } from "@/lib/content";
 import { useSiteData } from "@/lib/SiteData";
 import { backendConfigured, supabase } from "@/lib/supabase";
 
@@ -8,7 +9,7 @@ const field =
 const label = "mb-1.5 block text-xs font-medium uppercase tracking-wider text-fog";
 
 export default function ContactForm() {
-  const { sectors, config } = useSiteData();
+  const { sectors, config, t } = useSiteData();
   const [params] = useSearchParams();
   const [audience, setAudience] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -43,7 +44,7 @@ export default function ContactForm() {
       message: String(form.get("message") ?? "").trim(),
     });
     if (err) {
-      setError(`Couldn't send that. Please email ${config.contact_email} instead.`);
+      setError(fillEmail(t("form.error"), config.contact_email));
       setStatus("error");
       return;
     }
@@ -53,8 +54,8 @@ export default function ContactForm() {
   if (status === "sent") {
     return (
       <div role="status" className="rounded-sm border border-teal/40 bg-panel p-8">
-        <p className="font-display text-3xl italic">Thanks, we've got it.</p>
-        <p className="mt-2 text-fog">We'll reply to the email address you gave.</p>
+        <p className="font-display text-3xl italic">{t("form.success_title")}</p>
+        <p className="mt-2 text-fog">{t("form.success_text")}</p>
       </div>
     );
   }
@@ -62,29 +63,29 @@ export default function ContactForm() {
   return (
     <form onSubmit={submit} className="grid gap-5 rounded-sm border border-line bg-panel p-6 sm:grid-cols-2 sm:p-8">
       <div>
-        <label htmlFor="name" className={label}>Name or act</label>
+        <label htmlFor="name" className={label}>{t("form.name")}</label>
         <input id="name" name="name" required maxLength={120} autoComplete="name" className={field} />
       </div>
       <div>
-        <label htmlFor="email" className={label}>Email</label>
+        <label htmlFor="email" className={label}>{t("form.email")}</label>
         <input id="email" name="email" type="email" required maxLength={254} autoComplete="email" className={field} />
       </div>
       <div>
-        <label htmlFor="location" className={label}>Event location</label>
+        <label htmlFor="location" className={label}>{t("form.location")}</label>
         <input id="location" name="location" maxLength={160} className={field} />
       </div>
       <div>
-        <label htmlFor="audience" className={label}>I'm</label>
+        <label htmlFor="audience" className={label}>{t("form.audience")}</label>
         <select id="audience" value={audience} onChange={(e) => setAudience(e.target.value)} className={field}>
-          <option value="">Choose one</option>
+          <option value="">{t("form.audience_placeholder")}</option>
           {sectors.map((s) => (
             <option key={s.id} value={s.audience}>{s.title}</option>
           ))}
-          <option value="other">Something else</option>
+          <option value="other">{t("form.audience_other")}</option>
         </select>
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor="message" className={label}>Tell us about the event</label>
+        <label htmlFor="message" className={label}>{t("form.message")}</label>
         <textarea id="message" name="message" required rows={5} maxLength={4000} className={field} />
       </div>
       {/* Honeypot */}
@@ -100,7 +101,7 @@ export default function ContactForm() {
           disabled={status === "sending"}
           className="rounded-sm bg-paper px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-teal disabled:opacity-60"
         >
-          {status === "sending" ? "Sending…" : "Send"}
+          {status === "sending" ? t("form.sending") : t("form.send")}
         </button>
         {status === "error" && <p role="alert" className="text-sm text-ember">{error}</p>}
       </div>

@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Accent colours. The admin's Look tab overrides these at runtime (see SiteData.tsx). */
+:root {
+  --accent: 45 212 191;
+  --accent-2: 251 146 60;
+}
+
 html {
   scroll-behavior: smooth;
   background: #07090c;
@@ -21,6 +27,6 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid #2dd4bf;
+  outline: 2px solid rgb(var(--accent));
   outline-offset: 2px;
 }

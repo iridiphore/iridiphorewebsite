@@ -17,6 +17,8 @@ export interface SiteConfig {
   contact_email: string;
   instagram: string;
   youtube: string;
+  /** Raw JSON from the database; always read through normalizeContent(). */
+  content: unknown;
 }
 
 export interface Sector {

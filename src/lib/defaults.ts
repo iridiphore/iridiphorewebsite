@@ -18,6 +18,7 @@ export const DEFAULT_CONFIG: SiteConfig = {
   contact_email: "iridiphore@gmail.com",
   instagram: "",
   youtube: "",
+  content: {},
 };
 
 export const SAMPLE_SECTORS: Sector[] = [

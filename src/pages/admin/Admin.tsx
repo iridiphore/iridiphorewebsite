@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import SEO from "@/components/SEO";
+import { hexToTriplet, THEME_DEFAULTS } from "@/lib/content";
 import { backendConfigured, supabase } from "@/lib/supabase";
 import { ghostBtnCls } from "./fields";
 import SiteTab from "./SiteTab";
 import SectorsTab from "./SectorsTab";
+import TextTab from "./TextTab";
+import LookTab from "./LookTab";
 import EventsTab from "./EventsTab";
 import EnquiriesTab from "./EnquiriesTab";
 
@@ -14,12 +17,19 @@ const TABS = [
   { id: "enquiries", label: "Enquiries" },
   { id: "site", label: "Home page" },
   { id: "sectors", label: "Sectors" },
+  { id: "text", label: "Text" },
+  { id: "look", label: "Look & sections" },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-ink font-sans text-paper">
+    // The admin always uses the standard colours, so a poor colour choice on the Look tab can
+    // never make the screen you need to undo it unreadable.
+    <div
+      className="min-h-screen bg-ink font-sans text-paper"
+      style={{ "--accent": hexToTriplet(THEME_DEFAULTS.accent), "--accent-2": hexToTriplet(THEME_DEFAULTS.accent2) } as React.CSSProperties}
+    >
       <SEO title="Admin | Iridiphore" description="Admin" path="/admin" noindex />
       {children}
     </div>
@@ -100,13 +110,13 @@ export default function Admin() {
             </button>
           </div>
         </div>
-        <nav className="mx-auto flex max-w-5xl gap-1 px-5" aria-label="Admin sections">
+        <nav className="mx-auto flex max-w-5xl gap-1 overflow-x-auto px-5" aria-label="Admin sections">
           {TABS.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
               aria-current={tab === t.id ? "page" : undefined}
-              className={`border-b-2 px-4 py-3 text-sm transition-colors ${
+              className={`shrink-0 whitespace-nowrap border-b-2 px-4 py-3 text-sm transition-colors ${
                 tab === t.id ? "border-teal text-paper" : "border-transparent text-fog hover:text-paper"
               }`}
             >
@@ -120,6 +130,8 @@ export default function Admin() {
         {tab === "enquiries" && <EnquiriesTab />}
         {tab === "site" && <SiteTab />}
         {tab === "sectors" && <SectorsTab />}
+        {tab === "text" && <TextTab />}
+        {tab === "look" && <LookTab />}
       </div>
     </Shell>
   );

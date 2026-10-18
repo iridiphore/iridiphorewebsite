@@ -30,7 +30,10 @@ export default function SiteTab() {
     e.preventDefault();
     if (!supabase || !cfg) return;
     setBusy(true);
-    const { error } = await supabase.from("site_config").upsert({ id: 1, ...cfg, updated_at: new Date().toISOString() });
+    // `content` (wording, switches, colours) belongs to the Text and Look tabs. Leave it out so
+    // saving here can never overwrite what those tabs saved.
+    const { content: _content, ...fields } = cfg;
+    const { error } = await supabase.from("site_config").upsert({ id: 1, ...fields, updated_at: new Date().toISOString() });
     setBusy(false);
     if (error) return setStatus({ kind: "err", text: error.message });
     await refresh();

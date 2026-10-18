@@ -1,6 +1,16 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { backendConfigured, supabase } from "./supabase";
 import { DEFAULT_CONFIG, SAMPLE_EVENTS, SAMPLE_SECTORS } from "./defaults";
+import {
+  hexToTriplet,
+  normalizeContent,
+  resolveShow,
+  resolveText,
+  resolveTheme,
+  type ShowKey,
+  type TextKey,
+  type Theme,
+} from "./content";
 import type { Sector, SiteConfig, SiteEvent } from "./types";
 
 interface SiteData {
@@ -12,6 +22,11 @@ interface SiteData {
   preview: boolean;
   error: string | null;
   refresh: () => Promise<void>;
+  /** Wording: the admin's override if there is one, otherwise the standard text. */
+  t: (key: TextKey) => string;
+  /** Whether a part of the page is switched on. */
+  shown: (key: ShowKey) => boolean;
+  theme: Theme;
 }
 
 const Ctx = createContext<SiteData | null>(null);
@@ -52,9 +67,30 @@ export function SiteDataProvider({ children }: { children: ReactNode }) {
     void refresh();
   }, [refresh]);
 
+  const content = useMemo(() => normalizeContent(config.content), [config.content]);
+  const theme = useMemo(() => resolveTheme(content), [content]);
+
+  // Colours are CSS variables, so Tailwind classes like text-teal and bg-ember/15 follow them.
+  useEffect(() => {
+    const root = document.documentElement.style;
+    root.setProperty("--accent", hexToTriplet(theme.accent));
+    root.setProperty("--accent-2", hexToTriplet(theme.accent2));
+  }, [theme]);
+
   const value = useMemo<SiteData>(
-    () => ({ config, sectors, events, loading, preview: !backendConfigured, error, refresh }),
-    [config, sectors, events, loading, error, refresh],
+    () => ({
+      config,
+      sectors,
+      events,
+      loading,
+      preview: !backendConfigured,
+      error,
+      refresh,
+      t: (key) => resolveText(content, key),
+      shown: (key) => resolveShow(content, key),
+      theme,
+    }),
+    [config, sectors, events, loading, error, refresh, content, theme],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

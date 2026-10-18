@@ -13,6 +13,21 @@ A single-page React app hosted on **GitHub Pages**, with a **Supabase** backend 
 | `/work/<event>` | One event with its photos, clips and YouTube/Vimeo videos | **Work** |
 | `/admin` | Sign-in protected editor, plus the enquiries inbox | |
 
+## What admin can change
+
+| Admin tab | What it controls |
+| --- | --- |
+| **Work** | Events: title, type, date, location, description, cover, web address, draft/published, and their photos, clips and YouTube/Vimeo videos (captions, order) |
+| **Enquiries** | Contact form messages: read, reply, mark done, delete |
+| **Home page** | Headline, line under it, intro paragraph, hero video and still, logo, contact email, Instagram and YouTube links |
+| **Sectors** | The "Who we work with" cards: title, description, order, show/hide, add/delete |
+| **Text** | Every other heading, button, form label, message, event type name and search/link-preview title, each with "reset to standard" |
+| **Look & sections** | Accent colours, hero darkness, and switches for each menu link, the home sections, the filter buttons and the footer links |
+
+Still in code: fonts and layout, the iridescent backdrop colours, and the list of event types (gig, EMOM, livestream, other). Their names can be changed in the Text tab. Page titles for search engines that don't run scripts come from the build; edited titles apply after the page loads.
+
+The wording, switches and colours are stored as overrides in `site_config.content`. Only values that differ from the standard are saved, so "reset to standard" always works.
+
 ## Preview mode
 
 While `VITE_SUPABASE_URL` in `.env` is blank, the site shows sample content and a banner saying so. That lets anyone review the layout before the backend exists. Fill in `.env` (see [docs/SETUP.md](docs/SETUP.md)) and it switches to real data.
@@ -50,7 +65,7 @@ Cloudinary asset names should use letters, numbers, `-`, `_`, `.` and `/` only.
 src/pages/            Home, Work, EventDetail, Login, ResetPassword
 src/pages/admin/      Admin shell + one file per tab
 src/components/       HeroVideo, Iridescence (brand backdrop), EventCard, MediaItem, ContactForm
-src/lib/              cloudinary.ts (link parsing + URLs), SiteData.tsx (data loading), defaults.ts (preview content)
+src/lib/              content.ts (EVERY editable string, switch and colour default: add a line here to make something editable), cloudinary.ts (link parsing + URLs), SiteData.tsx (data loading), defaults.ts (preview content)
 supabase/migrations/  The whole backend schema
 docs/                 SETUP.md, SPEC.md
 ```

@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import Iridescence from "./Iridescence";
 import { cloudinaryConfigured, imageUrl } from "@/lib/cloudinary";
-import { formatDate, typeLabel } from "@/lib/format";
+import { formatDate } from "@/lib/format";
+import { useSiteData } from "@/lib/SiteData";
 import type { SiteEvent } from "@/lib/types";
 
 export default function EventCard({ event }: { event: SiteEvent }) {
+  const { t } = useSiteData();
   const meta = [formatDate(event.event_date), event.location].filter(Boolean).join(" · ");
   return (
     <Link
@@ -22,7 +24,7 @@ export default function EventCard({ event }: { event: SiteEvent }) {
           />
         )}
         <span className="absolute left-3 top-3 rounded-sm bg-ink/70 px-2 py-1 text-[11px] font-medium uppercase tracking-wider text-paper backdrop-blur">
-          {typeLabel(event.event_type)}
+          {t(`type.${event.event_type}`)}
         </span>
       </div>
       <div className="p-5">

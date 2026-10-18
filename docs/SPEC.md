@@ -12,6 +12,7 @@ A template the Iridiphore crew (three people, two of whom will edit) can review 
 - **Media:** paste a Cloudinary link in admin. No upload widget (nothing secret in the browser). Only the public id is stored; links from other accounts are refused. Livestream recordings go on YouTube/Vimeo, not Cloudinary.
 - **Enquiries:** stored in the database and shown in admin. Email notification is undecided.
 - **Admins:** two, via `user_roles`.
+- **Customisation over brevity:** all page wording, show/hide switches and the two accent colours are editable in admin (Text and Look tabs), stored as overrides in `site_config.content` and defined once in `src/lib/content.ts`. A blank box means "standard wording"; hiding is done with explicit switches. Fonts, layout, the backdrop colours and the event type list stay in code.
 - **Not carried over from My Liberal Pony:** Google Sheet content, Lovable preview-auth shim, seeded admin ids, MLP's Cloudinary cloud, Plausible tag, unused UI component library.
 
 ## Data model
@@ -24,6 +25,7 @@ A template the Iridiphore crew (three people, two of whom will edit) can review 
 4. Public site: hero video with iridescent fallback, sectors, recent work, contact form, Work and event pages.
 5. Admin: sign-in, role check, Home page, Sectors, Work (with media), Enquiries.
 6. Docs: README, SETUP.
+7. Full customisation: `site_config.content` migration, `content.ts`, Text and Look tabs, every public string routed through `t()`.
 
 ## Open items
 - **Copy:** every line is a plain first draft. The crew should rewrite the intro, sector descriptions and tagline in their own voice.

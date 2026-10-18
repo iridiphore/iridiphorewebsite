@@ -13,9 +13,9 @@ The steps only a person can do. Do them in order; the site works in preview mode
 Use a **new, separate** project for Iridiphore. Don't reuse the My Liberal Pony one.
 
 1. supabase.com > New project. Note the **Project ref**, the **URL** and the **publishable (anon) key** (Project Settings > API).
-2. Apply the schema, either way:
-   - CLI: `npx supabase link --project-ref <ref>` then `npx supabase db push`
-   - or paste `supabase/migrations/20261018000000_initial_schema.sql` into the SQL editor and run it.
+2. Apply the schema (**both** files in `supabase/migrations/`, in order), either way:
+   - CLI: `npx supabase link --project-ref <ref>` then `npx supabase db push`. This applies everything.
+   - or paste each file into the SQL editor and run them in filename order: `20261018000000_initial_schema.sql`, then `20261018010000_page_wording.sql`.
 3. Put the URL and publishable key in `.env`:
    ```
    VITE_SUPABASE_URL=https://<ref>.supabase.co
@@ -51,7 +51,11 @@ Commit the `.env` change and push to deploy it.
 1. **Home page** tab: paste the hero video link, edit the headline and line under it.
 2. **Sectors** tab: the three "Who we work with" cards.
 3. **Work** tab: **New event**, fill it in, tick **Published**, save. Then add photos, clips and videos to it.
-4. **Enquiries** tab: where contact form messages arrive.
+4. **Text** tab: rename any heading, button, form label or message. Empty box = standard wording. Press **Save changes** (one button for the whole tab).
+5. **Look & sections** tab: accent colours, hero darkness, and switches to hide menu links or sections.
+6. **Enquiries** tab: where contact form messages arrive.
+
+Mistake? Each field has **Reset to standard**, and each of the two tabs has **Reset all to standard**. The admin itself always uses the standard colours, so a bad colour choice can't lock you out of fixing it.
 
 Nothing is live until an event is ticked **Published**. Untick it to take it down without deleting it.
 

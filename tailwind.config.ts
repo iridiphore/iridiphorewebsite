@@ -10,8 +10,8 @@ export default {
         line: "#1c242d",
         fog: "#9aa7b4",
         paper: "#eef2f5",
-        teal: { DEFAULT: "#2dd4bf", deep: "#0f766e" },
-        ember: "#fb923c",
+        teal: "rgb(var(--accent) / <alpha-value>)",
+        ember: "rgb(var(--accent-2) / <alpha-value>)",
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', "Georgia", "serif"],
