@@ -1,0 +1,52 @@
+name: Supabase keepalive and backup
+
+# Free Supabase projects pause after about 7 days without activity. This reads the site
+# content every 3 days to keep the project awake, and saves a JSON copy of the PUBLIC
+# content (site config, sectors, published events and their media) into backup/.
+# Enquiries are private and are deliberately NOT backed up here.
+#
+# If the database is unreachable the job fails and GitHub emails the repo owner.
+# Does nothing until VITE_SUPABASE_URL is filled in in .env.
+
+on:
+  schedule:
+    - cron: '17 6 */3 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read content from Supabase
+        run: |
+          set -euo pipefail
+          set -a; source .env; set +a
+          if [ -z "${VITE_SUPABASE_URL:-}" ]; then echo "Supabase not configured yet; nothing to do."; exit 0; fi
+          mkdir -p backup
+          for table in site_config sectors events event_media; do
+            code=$(curl -sS -o "backup/$table.tmp" -w '%{http_code}' \
+              "$VITE_SUPABASE_URL/rest/v1/$table?select=*&order=id" \
+              -H "apikey: $VITE_SUPABASE_PUBLISHABLE_KEY" \
+              -H "Authorization: Bearer $VITE_SUPABASE_PUBLISHABLE_KEY")
+            if [ "$code" != "200" ]; then
+              echo "::error::$table returned HTTP $code. The Supabase project may be paused or misconfigured."
+              cat "backup/$table.tmp"; exit 1
+            fi
+            python3 -m json.tool --sort-keys "backup/$table.tmp" > "backup/$table.json"
+            rm "backup/$table.tmp"
+          done
+      - name: Commit backup if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add backup
+          if git diff --cached --quiet; then
+            echo "No content changes."
+          else
+            git commit -m "Backup site content [skip ci]"
+            git push
+          fi

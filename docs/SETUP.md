@@ -1,0 +1,72 @@
+# Setup
+
+The steps only a person can do. Do them in order; the site works in preview mode until step 2 is finished.
+
+## 1. Put the site online (GitHub Pages)
+
+1. In the repo: **Settings > Pages > Source: GitHub Actions**.
+2. Merge to `main` (or run **Actions > Deploy to GitHub Pages > Run workflow**).
+3. The site appears at `https://<user>.github.io/iridiphore/`. This works with no domain set up.
+
+> The workflow only runs for `main`. If the repo's default branch isn't `main`, either rename it or change `branches:` in `.github/workflows/deploy.yml`.
+
+## 2. Create the Supabase project
+
+Use a **new, separate** project for Iridiphore. Don't reuse the My Liberal Pony one.
+
+1. supabase.com > New project. Note the **Project ref**, the **URL** and the **publishable (anon) key** (Project Settings > API).
+2. Apply the schema, either way:
+   - CLI: `npx supabase link --project-ref <ref>` then `npx supabase db push`
+   - or paste `supabase/migrations/20261018000000_initial_schema.sql` into the SQL editor and run it.
+3. Put the URL and publishable key in `.env`:
+   ```
+   VITE_SUPABASE_URL=https://<ref>.supabase.co
+   VITE_SUPABASE_PUBLISHABLE_KEY=<publishable key>
+   ```
+   Only these two. Never the `service_role` key.
+4. In Supabase: **Authentication > URL Configuration**, set the Site URL to the live site address and add `<site>/reset-password` to Redirect URLs. This is what makes "Forgot password" work.
+
+## 3. Create the admins (two people)
+
+1. Supabase > **Authentication > Users > Add user**, with email and a strong password. Do it for each admin.
+2. In the SQL editor, give them the role:
+   ```sql
+   insert into public.user_roles (user_id, role)
+   select id, 'admin' from auth.users where email in ('person-one@example.com', 'person-two@example.com');
+   ```
+3. They sign in at `/login`. Anyone who is signed in but isn't in `user_roles` sees "No access".
+
+To add an admin later, repeat both steps. To remove one, `delete from public.user_roles where user_id = '<id>'`.
+
+## 4. Connect Cloudinary
+
+1. Create a Cloudinary account (a free one is fine to start). Copy the **cloud name** from the dashboard.
+2. Put it in `.env`: `VITE_CLOUDINARY_CLOUD_NAME=<cloud name>`
+3. Upload assets in the Cloudinary dashboard (Media Library), for example into folders `hero/` and `events/<event-name>/`.
+4. Use short, plain names: letters, numbers, `-` and `_`.
+5. In admin, click an asset in Cloudinary, copy its URL and paste it in. Nothing else is needed.
+
+Commit the `.env` change and push to deploy it.
+
+## 5. Add content
+
+1. **Home page** tab: paste the hero video link, edit the headline and line under it.
+2. **Sectors** tab: the three "Who we work with" cards.
+3. **Work** tab: **New event**, fill it in, tick **Published**, save. Then add photos, clips and videos to it.
+4. **Enquiries** tab: where contact form messages arrive.
+
+Nothing is live until an event is ticked **Published**. Untick it to take it down without deleting it.
+
+## 6. Custom domain (when ready to switch from the old site)
+
+`iridiphore.co.uk` currently points at the existing website. Switching it is the moment the old site goes offline, so do it last and on purpose.
+
+1. Add a file `public/CNAME` containing `iridiphore.co.uk`.
+2. In the DNS settings, point the domain at GitHub Pages: the four `A` records `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`, and `www` as a `CNAME` to `<user>.github.io`.
+3. Repo **Settings > Pages**: set the custom domain and tick Enforce HTTPS.
+4. Update the Supabase Site URL and redirect URL to the new address.
+
+## Optional later
+
+- **Emailed enquiries**: today enquiries are stored and shown in admin only. Emailing them needs a Supabase Edge Function and a mail provider (for example Resend). Not built yet.
+- **Analytics**: none installed. A cookieless option such as Plausible can be added to `index.html`.
