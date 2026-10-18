@@ -4,11 +4,9 @@ The steps only a person can do. Do them in order; the site works in preview mode
 
 ## 1. Put the site online (GitHub Pages)
 
-1. In the repo: **Settings > Pages > Source: GitHub Actions**.
-2. Merge to `main` (or run **Actions > Deploy to GitHub Pages > Run workflow**).
+1. In the repo: **Settings > Pages > Build and deployment > Source: GitHub Actions**. Do this **once, by hand, before the first deploy**. It needs repo admin rights. The deploy workflow isn't allowed to switch Pages on itself, and the first run fails with "Resource not accessible by integration" if this is skipped.
+2. Push to `main`, or run **Actions > Deploy to GitHub Pages > Run workflow**.
 3. The site appears at `https://<user>.github.io/iridiphore/`. This works with no domain set up.
-
-> The workflow only runs for `main`. If the repo's default branch isn't `main`, either rename it or change `branches:` in `.github/workflows/deploy.yml`.
 
 ## 2. Create the Supabase project
 

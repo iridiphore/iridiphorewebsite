@@ -20,11 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # Creates/enables the Pages site (source: GitHub Actions) on first run.
+      # Pages must already be switched on: Settings > Pages > Source: GitHub Actions.
+      # The workflow token is not allowed to create the Pages site itself, so this step
+      # only reads its settings (base path and URL). See docs/SETUP.md step 1.
       - id: pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/setup-node@v4
         with:
           node-version: 22

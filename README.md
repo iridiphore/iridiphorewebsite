@@ -26,7 +26,7 @@ npm run build   # typecheck + production build into dist/
 npm run preview # serve the production build
 ```
 
-Pushing to `main` builds and publishes via `.github/workflows/deploy.yml`.
+Pushing to `main` builds and publishes via `.github/workflows/deploy.yml`. GitHub Pages must be switched on once first (Settings > Pages > Source: GitHub Actions), see [docs/SETUP.md](docs/SETUP.md).
 
 ## Media (Cloudinary)
 
