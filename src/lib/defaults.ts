@@ -10,8 +10,7 @@ import type { Sector, SiteConfig, SiteEvent } from "./types";
 
 export const DEFAULT_CONFIG: SiteConfig = {
   headline: "Live visuals for live music.",
-  tagline: "Iridiphore is a visual collective. We make the visuals for gigs, EMOM nights and livestreams.",
-  intro: "",
+  tagline: "We turn gigs into audio-visual events people talk about and remember.",
   hero_video: null,
   hero_poster: null,
   logo: null,
@@ -22,9 +21,9 @@ export const DEFAULT_CONFIG: SiteConfig = {
 };
 
 export const SAMPLE_SECTORS: Sector[] = [
-  { id: "s1", position: 1, title: "Artists & Label Work", description: "Live visuals for your set, and video content for releases and tours.", audience: "artists-labels", published: true },
-  { id: "s2", position: 2, title: "Promoters & Managers", description: "Visuals for your nights and your acts, from a single event to a run of dates.", audience: "promoters-managers", published: true },
-  { id: "s3", position: 3, title: "Festivals & Venues", description: "A visual rig and crew for your stage, or a resident setup for your venue.", audience: "festivals-venues", published: true },
+  { id: "s1", position: 1, title: "Artists & Label Work", description: "Bespoke visuals for your set, album launch or livestream, made after talking to you about your style.", audience: "artists-labels", published: true },
+  { id: "s2", position: 2, title: "Promoters & Managers", description: "Turn a night into an audio-visual event people talk about and remember.", audience: "promoters-managers", published: true },
+  { id: "s3", position: 3, title: "Festivals & Venues", description: "Live visuals and projection mapping for your stage or room.", audience: "festivals-venues", published: true },
 ];
 
 export const SAMPLE_EVENTS: SiteEvent[] = [

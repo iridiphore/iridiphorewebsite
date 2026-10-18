@@ -186,8 +186,7 @@ export default function LookTab() {
           </fieldset>
         ))}
         <p className="text-xs text-fog/80">
-          The intro paragraph hides itself when its box on the Home page tab is empty. Sectors and events hide
-          themselves when there are none published.
+          Sectors and events hide themselves when there are none published.
         </p>
       </section>
 

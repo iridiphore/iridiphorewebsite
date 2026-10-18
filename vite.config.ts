@@ -23,9 +23,9 @@ const SHELLS: Shell[] = [
     route: "",
     title: "Iridiphore | Live visuals for live music",
     description:
-      "Iridiphore is a visual collective making live visuals for live music: gigs, EMOM nights and livestreams.",
+      "Iridiphore turns gigs into audio-visual events people talk about and remember: live visuals for artists, festivals and livestreams.",
     h1: "Iridiphore",
-    body: "Live visuals for live music. Gigs, EMOM nights and livestreams.",
+    body: "Live visuals for live music. We turn gigs into audio-visual events people talk about and remember.",
   },
   {
     route: "work",

@@ -44,6 +44,26 @@ export const TEXT_FIELDS = [
     default: "Use the form, or email {email}.", max: 200, hint: EMAIL_HINT,
   },
 
+  // ------------------------------------------------------------ Home: about
+  { key: "home.about_1_title", group: "Home page: about section", label: "Block 1: title", default: "The idea", max: 40 },
+  {
+    key: "home.about_1_text", group: "Home page: about section", label: "Block 1: text",
+    default: "Visuals should enhance the artist's performance, never distract from it. That's the rule behind everything we make.",
+    multiline: true, max: 600,
+  },
+  { key: "home.about_2_title", group: "Home page: about section", label: "Block 2: title", default: "Track record", max: 40 },
+  {
+    key: "home.about_2_text", group: "Home page: about section", label: "Block 2: text",
+    default: "We've delivered for dozens of artists, from indie and electronic acts to DJs, at album launches, festivals and livestreams. We're happy to work with any genre. Before the night we talk to the artist about their style, so what we make is bespoke to them.",
+    multiline: true, max: 600,
+  },
+  { key: "home.about_3_title", group: "Home page: about section", label: "Block 3: title", default: "On the night", max: 40 },
+  {
+    key: "home.about_3_text", group: "Home page: about section", label: "Block 3: text",
+    default: "Typically, we mix cameras live with textures, effects, video clips and projection mapping. We match the visuals to the music as it grows and fades, following the feel of each track as it happens.",
+    multiline: true, max: 600,
+  },
+
   // ------------------------------------------------------------ Work page
   { key: "work.title", group: "Work page", label: "Page heading", default: "Work", max: 80 },
   { key: "work.subtitle", group: "Work page", label: "Line under the heading", default: "Events we've made visuals for.", max: 200 },
@@ -85,7 +105,7 @@ export const TEXT_FIELDS = [
   { key: "seo.home_title", group: "Search and sharing", label: "Home page title (browser tab and Google)", default: "Iridiphore | Live visuals for live music", max: 70 },
   {
     key: "seo.home_description", group: "Search and sharing", label: "Home page description (Google and link previews)",
-    default: "Iridiphore is a visual collective making live visuals for live music: gigs, EMOM nights and livestreams.",
+    default: "Iridiphore turns gigs into audio-visual events people talk about and remember: live visuals for artists, festivals and livestreams.",
     multiline: true, max: 200,
     hint: "Changes apply once the page has loaded. Link previews from some apps and search engines that don't run scripts may keep showing the original text.",
   },
@@ -112,6 +132,7 @@ export const SHOW_FIELDS = [
   { key: "nav.work", group: "Menu", label: "Menu link: work" },
   { key: "nav.contact", group: "Menu", label: "Menu link: contact" },
   { key: "home.hero_buttons", group: "Home page", label: "Buttons under the headline" },
+  { key: "home.about", group: "Home page", label: "About section (three short blocks under the headline)" },
   { key: "home.sectors", group: "Home page", label: "\"Who we work with\" section" },
   { key: "home.recent", group: "Home page", label: "\"Recent work\" section" },
   { key: "work.filters", group: "Work page", label: "Filter buttons (by event type)" },

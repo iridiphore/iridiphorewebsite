@@ -53,9 +53,6 @@ export default function SiteTab() {
       <Field label="Line under the headline">
         <textarea className={inputCls} rows={2} value={cfg.tagline} maxLength={300} onChange={(e) => set("tagline", e.target.value)} />
       </Field>
-      <Field label="Intro paragraph" hint="Optional. Shown below the video. Leave empty to hide it.">
-        <textarea className={inputCls} rows={4} value={cfg.intro} maxLength={1200} onChange={(e) => set("intro", e.target.value)} />
-      </Field>
 
       <CloudinaryField
         label="Background video"

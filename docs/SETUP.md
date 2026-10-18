@@ -48,7 +48,7 @@ Commit the `.env` change and push to deploy it.
 
 ## 5. Add content
 
-1. **Home page** tab: paste the hero video link, edit the headline and line under it.
+1. **Home page** tab: paste the hero video link, edit the headline and line under it. (The three short "about" blocks under the hero are in the **Text** tab, group "Home page: about section".)
 2. **Sectors** tab: the three "Who we work with" cards.
 3. **Work** tab: **New event**, fill it in, tick **Published**, save. Then add photos, clips and videos to it.
 4. **Text** tab: rename any heading, button, form label or message. Empty box = standard wording. Press **Save changes** (one button for the whole tab).

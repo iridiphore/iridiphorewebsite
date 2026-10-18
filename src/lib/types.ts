@@ -10,7 +10,6 @@ export const EVENT_TYPE_LABELS: Record<EventType, string> = {
 export interface SiteConfig {
   headline: string;
   tagline: string;
-  intro: string;
   hero_video: string | null;
   hero_poster: string | null;
   logo: string | null;

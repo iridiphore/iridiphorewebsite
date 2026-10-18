@@ -13,6 +13,7 @@ A template the Iridiphore crew (three people, two of whom will edit) can review 
 - **Enquiries:** stored in the database and shown in admin. Email notification is undecided.
 - **Admins:** two, via `user_roles`.
 - **Customisation over brevity:** all page wording, show/hide switches and the two accent colours are editable in admin (Text and Look tabs), stored as overrides in `site_config.content` and defined once in `src/lib/content.ts`. A blank box means "standard wording"; hiding is done with explicit switches. Fonts, layout, the backdrop colours and the event type list stay in code.
+- **Copy:** the crew supplied the description of what Iridiphore does (the idea, track record, how a night works). It is lightly edited into the tagline, three "about" blocks under the hero, the sector blurbs and the search description. The blocks are Text-tab fields with a show/hide switch, defaulted in code so they show before anyone has admin access. The old single `intro` field is gone from the app; its database column is left in place, unused.
 - **Not carried over from My Liberal Pony:** Google Sheet content, Lovable preview-auth shim, seeded admin ids, MLP's Cloudinary cloud, Plausible tag, unused UI component library.
 
 ## Data model
@@ -26,9 +27,10 @@ A template the Iridiphore crew (three people, two of whom will edit) can review 
 5. Admin: sign-in, role check, Home page, Sectors, Work (with media), Enquiries.
 6. Docs: README, SETUP.
 7. Full customisation: `site_config.content` migration, `content.ts`, Text and Look tabs, every public string routed through `t()`.
+8. Crew copy: about section, tagline, sector blurbs, search description; migration that updates old placeholder text only where unedited.
 
 ## Open items
-- **Copy:** every line is a plain first draft. The crew should rewrite the intro, sector descriptions and tagline in their own voice.
+- **Copy:** built from the crew's own text, lightly edited. Worth a read by the crew, in particular the claim "dozens of artists". The sector blurbs are written from that text and are the most likely to need rewording.
 - **Logo and brand mark:** none supplied. A text wordmark is used; a logo can be set in admin.
 - **Enquiry email:** decide whether to add email delivery.
 - **Hero footage:** due next Wednesday. Until then the iridescent backdrop shows.

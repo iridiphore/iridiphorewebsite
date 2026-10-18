@@ -80,7 +80,7 @@ export default function TextTab() {
         <h2 className="font-display text-3xl italic">Text</h2>
         <p className="mt-1 max-w-2xl text-sm text-fog">
           Every heading, button and message on the site. Leave a box empty to use the standard wording, shown in grey
-          inside the box. The headline, the line under it and the intro paragraph are on the <b>Home page</b> tab, and
+          inside the box. The headline and the line under it are on the <b>Home page</b> tab, and
           the cards on <b>Sectors</b>.
         </p>
       </div>

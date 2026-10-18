@@ -19,9 +19,9 @@ A single-page React app hosted on **GitHub Pages**, with a **Supabase** backend 
 | --- | --- |
 | **Work** | Events: title, type, date, location, description, cover, web address, draft/published, and their photos, clips and YouTube/Vimeo videos (captions, order) |
 | **Enquiries** | Contact form messages: read, reply, mark done, delete |
-| **Home page** | Headline, line under it, intro paragraph, hero video and still, logo, contact email, Instagram and YouTube links |
+| **Home page** | Headline, line under it, hero video and still, logo, contact email, Instagram and YouTube links |
 | **Sectors** | The "Who we work with" cards: title, description, order, show/hide, add/delete |
-| **Text** | Every other heading, button, form label, message, event type name and search/link-preview title, each with "reset to standard" |
+| **Text** | Every other piece of wording, including the three "about" blocks under the hero (The idea / Track record / On the night), headings, buttons, form labels, messages, event type names and search/link-preview titles, each with "reset to standard" |
 | **Look & sections** | Accent colours, hero darkness, and switches for each menu link, the home sections, the filter buttons and the footer links |
 
 Still in code: fonts and layout, the iridescent backdrop colours, and the list of event types (gig, EMOM, livestream, other). Their names can be changed in the Text tab. Page titles for search engines that don't run scripts come from the build; edited titles apply after the page loads.

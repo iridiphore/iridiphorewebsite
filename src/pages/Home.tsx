@@ -43,9 +43,16 @@ export default function Home() {
         </div>
       </section>
 
-      {config.intro && (
-        <section className="mx-auto max-w-3xl px-5 py-20 sm:px-8">
-          <p className="whitespace-pre-line text-xl leading-relaxed text-paper/85">{config.intro}</p>
+      {shown("home.about") && (
+        <section aria-label="About" className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+          <div className="grid gap-10 md:grid-cols-3 md:gap-12">
+            {([1, 2, 3] as const).map((n) => (
+              <div key={n}>
+                <h2 className="text-xs font-medium uppercase tracking-[0.2em] text-teal">{t(`home.about_${n}_title`)}</h2>
+                <p className="mt-4 whitespace-pre-line text-lg leading-relaxed text-paper/85">{t(`home.about_${n}_text`)}</p>
+              </div>
+            ))}
+          </div>
         </section>
       )}
 
