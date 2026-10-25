@@ -70,7 +70,34 @@ Nothing is live until an event is ticked **Published**. Untick it to take it dow
 3. Repo **Settings > Pages**: set the custom domain and tick Enforce HTTPS.
 4. Update the Supabase Site URL and redirect URL to the new address.
 
+## 7. Forwarding enquiries by email (optional)
+
+New enquiries always appear in admin. This also emails each one to an address you choose. It uses a small Google Apps Script that sends from a Gmail account, so there is no mail provider to pay for or domain to verify.
+
+1. Signed in to the Gmail account the emails should come **from**: script.google.com > New project. Paste this over the default code and save:
+   ```js
+   function doPost(e) {
+     var d = JSON.parse(e.postData.contents);
+     var secret = PropertiesService.getScriptProperties().getProperty('SECRET');
+     if (!secret || d.secret !== secret) return ContentService.createTextOutput('forbidden');
+     var opts = { name: 'Iridiphore website' };
+     if (d.reply_to) opts.replyTo = d.reply_to;
+     GmailApp.sendEmail(d.to, d.subject, d.body, opts);
+     return ContentService.createTextOutput('ok');
+   }
+   ```
+2. In Supabase: **Project Settings > Vault > Secrets**. The secret `enquiry_webhook_secret` holds a random value. Copy it.
+3. In the Apps Script: **Project Settings > Script properties > Add**: name `SECRET`, value = the copied secret.
+4. **Deploy > New deployment > Web app**. Execute as: **Me**. Who has access: **Anyone**. Authorise when asked. Copy the **Web app URL**.
+5. In Supabase Vault, add a secret named `enquiry_webhook_url` with that URL.
+6. In admin > **Enquiries**: tick *Forward enquiries to email*, enter the address, **Save**, then **Send test email**.
+
+Good to know:
+- Emails come from the Gmail account that owns the script. Replying goes to the visitor, not to that account.
+- A free Gmail account can send about 100 emails a day. Forwarding stops after 10 enquiries in an hour; the rest are still saved in admin.
+- If the test says it isn't set up, one of the two Vault secrets is missing or misspelt. If it says "sent" but nothing arrives, check spam, then that the deployment is set to *Anyone*. After editing the script, create a **new deployment version**.
+- Treat the secret like a password. If it leaks, change it in both Vault and Script properties.
+
 ## Optional later
 
-- **Emailed enquiries**: today enquiries are stored and shown in admin only. Emailing them needs a Supabase Edge Function and a mail provider (for example Resend). Not built yet.
 - **Analytics**: none installed. A cookieless option such as Plausible can be added to `index.html`.

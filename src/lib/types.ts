@@ -94,6 +94,12 @@ export interface SiteEvent {
   event_media: EventMedia[];
 }
 
+export interface NotificationSettings {
+  id: 1;
+  forward_enabled: boolean;
+  forward_to: string;
+}
+
 export interface Enquiry {
   id: string;
   created_at: string;

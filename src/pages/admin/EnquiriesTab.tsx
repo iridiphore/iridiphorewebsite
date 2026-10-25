@@ -1,8 +1,99 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useSiteData } from "@/lib/SiteData";
-import type { Enquiry } from "@/lib/types";
-import { ghostBtnCls, useStatus } from "./fields";
+import type { Enquiry, NotificationSettings } from "@/lib/types";
+import { Field, btnCls, ghostBtnCls, inputCls, useStatus } from "./fields";
+
+const TEST_RESULT: Record<string, { kind: "ok" | "err"; text: string }> = {
+  sent: { kind: "ok", text: "Test email sent. Check the inbox (and spam) in a minute." },
+  disabled: { kind: "err", text: "Forwarding is switched off." },
+  no_address: { kind: "err", text: "Save an address first." },
+  not_configured: { kind: "err", text: "The email sender isn't set up yet. See the setup guide (Forwarding enquiries)." },
+};
+
+/** Where new enquiries are emailed. The address is private: only signed-in admins can read it. */
+function ForwardPanel() {
+  const [saved, setSaved] = useState<NotificationSettings | null>(null);
+  const [enabled, setEnabled] = useState(false);
+  const [to, setTo] = useState("");
+  const [busy, setBusy] = useState(false);
+  const { setStatus, node } = useStatus();
+
+  useEffect(() => {
+    if (!supabase) return;
+    void supabase
+      .from("notification_settings")
+      .select("*")
+      .eq("id", 1)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (error) return setStatus({ kind: "err", text: error.message });
+        const s = (data as NotificationSettings | null) ?? { id: 1 as const, forward_enabled: false, forward_to: "" };
+        setSaved(s);
+        setEnabled(s.forward_enabled);
+        setTo(s.forward_to);
+      });
+  }, [setStatus]);
+
+  const dirty = saved !== null && (enabled !== saved.forward_enabled || to.trim() !== saved.forward_to);
+
+  async function save() {
+    if (!supabase) return;
+    const address = to.trim();
+    if (enabled && !address) return setStatus({ kind: "err", text: "Enter an email address to forward to." });
+    setBusy(true);
+    const { error } = await supabase
+      .from("notification_settings")
+      .upsert({ id: 1, forward_enabled: enabled, forward_to: address, updated_at: new Date().toISOString() });
+    setBusy(false);
+    if (error) {
+      return setStatus({ kind: "err", text: error.code === "23514" ? "That doesn't look like a valid email address." : error.message });
+    }
+    setSaved({ id: 1, forward_enabled: enabled, forward_to: address });
+    setTo(address);
+    setStatus({ kind: "ok", text: enabled ? `Saved. New enquiries will be emailed to ${address}.` : "Saved. Forwarding is off." });
+  }
+
+  async function test() {
+    if (!supabase) return;
+    setBusy(true);
+    const { data, error } = await supabase.rpc("send_test_forward");
+    setBusy(false);
+    if (error) return setStatus({ kind: "err", text: error.message });
+    setStatus(TEST_RESULT[String(data)] ?? { kind: "err", text: "Something went wrong sending the test." });
+  }
+
+  if (!saved) return null;
+  return (
+    <section aria-label="Email forwarding" className="space-y-4 rounded-sm border border-line bg-panel p-5">
+      <div>
+        <h3 className="font-medium">Forward new enquiries by email</h3>
+        <p className="mt-1 text-sm text-fog">Every new enquiry is also emailed here. Replying to that email goes straight to the person who wrote in.</p>
+      </div>
+      <label className="flex items-center gap-2 text-sm">
+        <input type="checkbox" checked={enabled} onChange={(e) => setEnabled(e.target.checked)} />
+        Forward enquiries to email
+      </label>
+      <Field label="Send to" hint="One address.">
+        <input
+          type="email"
+          className={inputCls}
+          value={to}
+          maxLength={254}
+          placeholder="you@example.com"
+          onChange={(e) => setTo(e.target.value)}
+        />
+      </Field>
+      <div className="flex flex-wrap gap-2">
+        <button className={btnCls} disabled={busy || !dirty} onClick={() => void save()}>Save</button>
+        <button className={ghostBtnCls} disabled={busy || dirty || !saved.forward_to} onClick={() => void test()}>
+          Send test email
+        </button>
+      </div>
+      {node}
+    </section>
+  );
+}
 
 export default function EnquiriesTab() {
   const { sectors } = useSiteData();
@@ -46,6 +137,7 @@ export default function EnquiriesTab() {
         </p>
         {node}
       </div>
+      <ForwardPanel />
       {rows.map((r) => (
         <article key={r.id} className={`rounded-sm border bg-panel p-5 ${r.handled ? "border-line opacity-60" : "border-teal/40"}`}>
           <div className="flex flex-wrap items-baseline justify-between gap-2">
