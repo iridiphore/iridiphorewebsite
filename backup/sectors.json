@@ -1,0 +1,26 @@
+[
+    {
+        "audience": "festivals-venues",
+        "description": "Live visuals and projection mapping for your stage or room.",
+        "id": "2575242f-383f-49c3-896b-091fb8861504",
+        "position": 3,
+        "published": true,
+        "title": "Festivals & Venues"
+    },
+    {
+        "audience": "artists-labels",
+        "description": "Bespoke visuals for your set, album launch or livestream, made after talking to you about your style.",
+        "id": "486b1abc-f57f-48af-9537-16011fd364a3",
+        "position": 1,
+        "published": true,
+        "title": "Artists & Label Work"
+    },
+    {
+        "audience": "promoters-managers",
+        "description": "Turn a night into an audio-visual event people talk about and remember.",
+        "id": "cc27661a-ebe9-4742-94e0-05006ad0856b",
+        "position": 2,
+        "published": true,
+        "title": "Promoters & Managers"
+    }
+]
