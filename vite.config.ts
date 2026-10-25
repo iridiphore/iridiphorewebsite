@@ -28,6 +28,13 @@ const SHELLS: Shell[] = [
     body: "Live visuals for live music. We turn gigs into audio-visual events people talk about and remember.",
   },
   {
+    route: "blog",
+    title: "Blog | Iridiphore",
+    description: "News and stories from Iridiphore: live visuals for live music.",
+    h1: "Blog",
+    body: "News and stories from behind the visuals.",
+  },
+  {
     route: "work",
     title: "Work | Iridiphore",
     description: "Events Iridiphore has made visuals for: gigs, EMOM nights and livestreams.",

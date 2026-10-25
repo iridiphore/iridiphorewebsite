@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { cloudinaryConfigured, imageUrl, videoSources } from "@/lib/cloudinary";
-import type { EventMedia } from "@/lib/types";
+import { cloudinaryConfigured, videoSources } from "@/lib/cloudinary";
+import { mediaImageUrl } from "@/lib/media";
+import type { BlogMedia, EventMedia } from "@/lib/types";
 
-function Embed({ media }: { media: EventMedia }) {
+type AnyMedia = EventMedia | BlogMedia;
+
+function Embed({ media }: { media: AnyMedia }) {
   const [play, setPlay] = useState(false);
 
   if (media.provider === "vimeo") {
@@ -56,23 +59,22 @@ function Embed({ media }: { media: EventMedia }) {
   );
 }
 
-export default function MediaItem({ media }: { media: EventMedia }) {
+export default function MediaItem({ media, altFallback = "" }: { media: AnyMedia; altFallback?: string }) {
   let body = null;
 
   if (media.kind === "embed") {
     body = <Embed media={media} />;
-  } else if (cloudinaryConfigured && media.kind === "image") {
-    body = (
-      <a href={imageUrl(media.ref)} target="_blank" rel="noopener noreferrer">
-        <img
-          src={imageUrl(media.ref, { w: 1600 })}
-          alt={media.caption}
-          loading="lazy"
-          className="w-full rounded-sm"
-        />
-      </a>
-    );
-  } else if (cloudinaryConfigured && media.kind === "video") {
+  } else if (media.kind === "image") {
+    const src = mediaImageUrl(media.source, media.ref, { w: 1600 });
+    const full = mediaImageUrl(media.source, media.ref);
+    if (src && full) {
+      body = (
+        <a href={full} target="_blank" rel="noopener noreferrer">
+          <img src={src} alt={media.caption || altFallback} loading="lazy" className="w-full rounded-sm" />
+        </a>
+      );
+    }
+  } else if (media.kind === "video" && cloudinaryConfigured) {
     const s = videoSources(media.ref, 1280);
     body = (
       <video controls playsInline preload="metadata" poster={s.poster} className="aspect-video w-full rounded-sm bg-panel">
@@ -83,10 +85,12 @@ export default function MediaItem({ media }: { media: EventMedia }) {
   }
   if (!body) return null;
 
+  const credit = "credit" in media && media.credit ? `Photo: ${media.credit}` : "";
+  const caption = [media.caption, credit].filter(Boolean).join(" · ");
   return (
     <figure>
       {body}
-      {media.caption && <figcaption className="mt-2 text-sm text-fog">{media.caption}</figcaption>}
+      {caption && <figcaption className="mt-2 text-sm text-fog">{caption}</figcaption>}
     </figure>
   );
 }

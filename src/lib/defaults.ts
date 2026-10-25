@@ -1,4 +1,4 @@
-import type { Sector, SiteConfig, SiteEvent } from "./types";
+import type { BlogCategory, BlogPost, Sector, SiteConfig, SiteEvent } from "./types";
 
 /**
  * Sample content shown in PREVIEW MODE only (no Supabase configured). Once the backend is
@@ -45,4 +45,25 @@ export const SAMPLE_EVENTS: SiteEvent[] = [
     description: "Placeholder event. Each event can hold several images, clips and embeds.",
     event_media: [],
   },
+];
+
+export const SAMPLE_CATEGORIES: BlogCategory[] = [
+  { id: "c1", slug: "news", title: "News", position: 1 },
+  { id: "c2", slug: "behind-the-scenes", title: "Behind the scenes", position: 2 },
+  { id: "c3", slug: "gigs-events", title: "Gigs & events", position: 3 },
+  { id: "c4", slug: "livestreams", title: "Livestreams", position: 4 },
+];
+
+const samplePost = (n: number, title: string, category: string, date: string, description: string, featured = false): BlogPost => ({
+  id: `p${n}`, slug: `sample-post-${n}`, title, category, post_date: date, description,
+  cover: null, cover_source: null, featured, published: true, blog_media: [],
+});
+
+export const SAMPLE_POSTS: BlogPost[] = [
+  samplePost(1, "Sample post: a night in the lights", "gigs-events", "2026-10-02",
+    "Placeholder post. Posts are written and edited in /admin: a title, a category, a cover image, the text itself, and any number of photos and videos underneath."),
+  samplePost(2, "Sample post: behind the scenes", "behind-the-scenes", "2026-09-14",
+    "Placeholder post. Photos can be uploaded straight from a phone or laptop, or pasted from Cloudinary. Videos come from Cloudinary or as YouTube and Vimeo links."),
+  samplePost(3, "Sample post: news", "news", "2026-08-30",
+    "Placeholder post. Switch on \"Featured on Home\" for the posts that should appear on the home page. Until you do, the latest three show there."),
 ];

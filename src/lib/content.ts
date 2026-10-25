@@ -29,6 +29,7 @@ export const TEXT_FIELDS = [
   { key: "brand.name", group: "Site name and menu", label: "Site name (header and footer)", default: "IRIDIPHORE", max: 40 },
   { key: "nav.sectors", group: "Site name and menu", label: "Menu: sectors", default: "Sectors", max: 30 },
   { key: "nav.work", group: "Site name and menu", label: "Menu: work", default: "Work", max: 30 },
+  { key: "nav.blog", group: "Site name and menu", label: "Menu: blog", default: "Blog", max: 30 },
   { key: "nav.contact", group: "Site name and menu", label: "Menu: contact", default: "Contact", max: 30 },
 
   // ------------------------------------------------------------ Home
@@ -38,6 +39,8 @@ export const TEXT_FIELDS = [
   { key: "home.sector_link", group: "Home page", label: "Link on each sector card", default: "Enquire →", max: 40 },
   { key: "home.recent_title", group: "Home page", label: "Recent work heading", default: "Recent work", max: 80 },
   { key: "home.recent_all", group: "Home page", label: "Link to all work", default: "All work →", max: 40 },
+  { key: "home.blog_title", group: "Home page", label: "Blog section heading", default: "From the blog", max: 80 },
+  { key: "home.blog_all", group: "Home page", label: "Link to all posts", default: "All posts →", max: 40 },
   { key: "home.contact_title", group: "Home page", label: "Contact heading", default: "Get in touch", max: 80 },
   {
     key: "home.contact_intro", group: "Home page", label: "Sentence above the form",
@@ -71,6 +74,14 @@ export const TEXT_FIELDS = [
   { key: "work.empty", group: "Work page", label: "Message when there are no events", default: "Nothing here yet.", max: 120 },
   { key: "work.loading", group: "Work page", label: "Loading message", default: "Loading…", max: 60 },
   { key: "event.back", group: "Work page", label: "Link back from an event", default: "← All work", max: 40 },
+
+  // ------------------------------------------------------------ Blog page
+  { key: "blog.title", group: "Blog page", label: "Page heading", default: "Blog", max: 80 },
+  { key: "blog.subtitle", group: "Blog page", label: "Line under the heading", default: "News and stories from behind the visuals.", max: 200 },
+  { key: "blog.filter_all", group: "Blog page", label: "Filter button: everything", default: "All", max: 30 },
+  { key: "blog.empty", group: "Blog page", label: "Message when there are no posts", default: "No posts yet.", max: 120 },
+  { key: "blog.loading", group: "Blog page", label: "Loading message", default: "Loading…", max: 60 },
+  { key: "blog.back", group: "Blog page", label: "Link back from a post", default: "← All posts", max: 40 },
 
   // ------------------------------------------------------------ Contact form
   { key: "form.name", group: "Contact form", label: "Name field", default: "Name or act", max: 60 },
@@ -109,6 +120,8 @@ export const TEXT_FIELDS = [
     multiline: true, max: 200,
     hint: "Changes apply once the page has loaded. Link previews from some apps and search engines that don't run scripts may keep showing the original text.",
   },
+  { key: "seo.blog_title", group: "Search and sharing", label: "Blog page title", default: "Blog | Iridiphore", max: 70 },
+  { key: "seo.blog_description", group: "Search and sharing", label: "Blog page description", default: "News and stories from Iridiphore: live visuals for live music.", multiline: true, max: 200 },
   { key: "seo.work_title", group: "Search and sharing", label: "Work page title", default: "Work | Iridiphore", max: 70 },
   { key: "seo.work_description", group: "Search and sharing", label: "Work page description", default: "Events Iridiphore has made visuals for: gigs, EMOM nights and livestreams.", multiline: true, max: 200 },
 ] as const satisfies readonly TextField[];
@@ -130,12 +143,15 @@ export interface ShowField {
 export const SHOW_FIELDS = [
   { key: "nav.sectors", group: "Menu", label: "Menu link: sectors" },
   { key: "nav.work", group: "Menu", label: "Menu link: work" },
+  { key: "nav.blog", group: "Menu", label: "Menu link: blog" },
   { key: "nav.contact", group: "Menu", label: "Menu link: contact" },
   { key: "home.hero_buttons", group: "Home page", label: "Buttons under the headline" },
   { key: "home.about", group: "Home page", label: "About section (three short blocks under the headline)" },
   { key: "home.sectors", group: "Home page", label: "\"Who we work with\" section" },
   { key: "home.recent", group: "Home page", label: "\"Recent work\" section" },
+  { key: "home.blog", group: "Home page", label: "\"From the blog\" section (featured posts)" },
   { key: "work.filters", group: "Work page", label: "Filter buttons (by event type)" },
+  { key: "blog.filters", group: "Blog page", label: "Filter buttons (by category)" },
   { key: "footer.email", group: "Footer", label: "Email address" },
   { key: "footer.instagram", group: "Footer", label: "Instagram link (needs a link set on the Home page tab)" },
   { key: "footer.youtube", group: "Footer", label: "YouTube link (needs a link set on the Home page tab)" },

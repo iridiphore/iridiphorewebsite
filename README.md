@@ -11,6 +11,8 @@ A single-page React app hosted on **GitHub Pages**, with a **Supabase** backend 
 | `/` | Full-screen background video, headline, "Who we work with" cards, recent work, contact form | **Home page**, **Sectors** |
 | `/work` | Every event: gigs, EMOM nights, livestreams. Filter by type | **Work** |
 | `/work/<event>` | One event with its photos, clips and YouTube/Vimeo videos | **Work** |
+| `/blog` | Every published post, newest first. Filter by category | **Blog** |
+| `/blog/<post>` | One post: cover, text, photos, clips and videos | **Blog** |
 | `/admin` | Sign-in protected editor, plus the enquiries inbox | |
 
 ## What admin can change
@@ -18,6 +20,7 @@ A single-page React app hosted on **GitHub Pages**, with a **Supabase** backend 
 | Admin tab | What it controls |
 | --- | --- |
 | **Work** | Events: title, type, date, location, description, cover, web address, draft/published, and their photos, clips and YouTube/Vimeo videos (captions, order) |
+| **Blog** | Posts: title, web address, category, date, cover image (upload or Cloudinary link), description, photos/clips/YouTube-Vimeo videos with captions and credits, **Featured on Home**, draft/published. Plus a categories manager |
 | **Enquiries** | Contact form messages: read, reply, mark done, delete |
 | **Home page** | Headline, line under it, hero video and still, logo, contact email, Instagram and YouTube links |
 | **Sectors** | The "Who we work with" cards: title, description, order, show/hide, add/delete |
@@ -48,7 +51,8 @@ Pushing to `main` builds and publishes via `.github/workflows/deploy.yml`. GitHu
 Only the **public id** of an asset is stored, never a URL. In admin, paste any Cloudinary link and it is checked and reduced to the public id. Links from other accounts or other hosts are refused. The site builds delivery URLs from `VITE_CLOUDINARY_CLOUD_NAME`, so pages can only ever load media from Iridiphore's own cloud.
 
 - **Hero video**: a short (8 to 15 second) loop. Delivered as WebM and MP4, with the first frame as the poster.
-- **Photos and clips**: any number per event.
+- **Photos and clips**: any number per event or post.
+- **Uploads (blog only)**: photos can also be uploaded straight from admin (JPG, PNG, WebP, GIF, up to 10 MB each). The browser shrinks them to 2400px and re-saves them as WebP first (this also removes hidden location data), then stores them in this project's own Supabase Storage bucket `site-photos`. Only admins can add files. Removing a post or photo does not delete the stored file.
 - **Long videos and livestream recordings**: put them on YouTube or Vimeo and paste that link. Don't host them on Cloudinary.
 
 Cloudinary asset names should use letters, numbers, `-`, `_`, `.` and `/` only.
@@ -58,13 +62,14 @@ Cloudinary asset names should use letters, numbers, `-`, `_`, `.` and `/` only.
 - The Supabase **publishable** key and the Cloudinary **cloud name** are in `.env`. Both are public by design. Never commit a `service_role` key or any API secret.
 - All access control is Row-Level Security in `supabase/migrations/`. Visitors can read published content and insert enquiries, and nothing else. Writing content or reading enquiries needs a signed-in user with the `admin` role.
 - The contact form has a honeypot field, and the database rejects malformed or oversized submissions.
+- The `site-photos` storage bucket is public to read, but only admins can write, and it accepts only JPG/PNG/WebP/GIF up to 10 MB (no SVG).
 
 ## Layout
 
 ```
-src/pages/            Home, Work, EventDetail, Login, ResetPassword
+src/pages/            Home, Work, EventDetail, Blog, BlogPost, Login, ResetPassword
 src/pages/admin/      Admin shell + one file per tab
-src/components/       HeroVideo, Iridescence (brand backdrop), EventCard, MediaItem, ContactForm
+src/components/       HeroVideo, Iridescence (brand backdrop), EventCard, PostCard, MediaItem, ContactForm
 src/lib/              content.ts (EVERY editable string, switch and colour default: add a line here to make something editable), cloudinary.ts (link parsing + URLs), SiteData.tsx (data loading), defaults.ts (preview content)
 supabase/migrations/  The whole backend schema
 docs/                 SETUP.md, SPEC.md

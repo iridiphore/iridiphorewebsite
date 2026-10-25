@@ -5,11 +5,14 @@ import HeroVideo from "@/components/HeroVideo";
 import EventCard from "@/components/EventCard";
 import ContactForm from "@/components/ContactForm";
 import EmailText from "@/components/EmailText";
+import PostCard from "@/components/PostCard";
+import { selectFeaturedPosts } from "@/lib/featuredPosts";
 import { useSiteData } from "@/lib/SiteData";
 
 export default function Home() {
-  const { config, sectors, events, t, shown, theme } = useSiteData();
+  const { config, sectors, events, posts, t, shown, theme } = useSiteData();
   const recent = events.slice(0, 3);
+  const featuredPosts = selectFeaturedPosts(posts);
 
   return (
     <Layout>
@@ -84,6 +87,20 @@ export default function Home() {
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {recent.map((e) => (
               <EventCard key={e.id} event={e} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {shown("home.blog") && featuredPosts.length > 0 && (
+        <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="font-display text-4xl italic sm:text-5xl">{t("home.blog_title")}</h2>
+            <Link to="/blog" className="text-sm text-teal hover:underline">{t("home.blog_all")}</Link>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {featuredPosts.map((p) => (
+              <PostCard key={p.id} post={p} />
             ))}
           </div>
         </section>

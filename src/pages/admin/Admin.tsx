@@ -10,10 +10,12 @@ import SectorsTab from "./SectorsTab";
 import TextTab from "./TextTab";
 import LookTab from "./LookTab";
 import EventsTab from "./EventsTab";
+import BlogTab from "./BlogTab";
 import EnquiriesTab from "./EnquiriesTab";
 
 const TABS = [
   { id: "events", label: "Work" },
+  { id: "blog", label: "Blog" },
   { id: "enquiries", label: "Enquiries" },
   { id: "site", label: "Home page" },
   { id: "sectors", label: "Sectors" },
@@ -127,6 +129,7 @@ export default function Admin() {
       </header>
       <div className="mx-auto max-w-5xl px-5 py-8">
         {tab === "events" && <EventsTab />}
+        {tab === "blog" && <BlogTab />}
         {tab === "enquiries" && <EnquiriesTab />}
         {tab === "site" && <SiteTab />}
         {tab === "sectors" && <SectorsTab />}

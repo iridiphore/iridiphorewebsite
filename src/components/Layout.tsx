@@ -21,6 +21,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const nav = [
     { show: shown("nav.sectors"), label: t("nav.sectors"), to: { pathname: "/", hash: "#sectors" } },
     { show: shown("nav.work"), label: t("nav.work"), to: { pathname: "/work" } },
+    { show: shown("nav.blog"), label: t("nav.blog"), to: { pathname: "/blog" } },
     { show: shown("nav.contact"), label: t("nav.contact"), to: { pathname: "/", hash: "#contact" } },
   ].filter((n) => n.show);
 

@@ -13,9 +13,10 @@ The steps only a person can do. Do them in order; the site works in preview mode
 Use a **new, separate** project for Iridiphore. Don't reuse the My Liberal Pony one.
 
 1. supabase.com > New project. Note the **Project ref**, the **URL** and the **publishable (anon) key** (Project Settings > API).
-2. Apply the schema (**both** files in `supabase/migrations/`, in order), either way:
+2. Apply the schema (**every** file in `supabase/migrations/`, in order), either way:
    - CLI: `npx supabase link --project-ref <ref>` then `npx supabase db push`. This applies everything.
-   - or paste each file into the SQL editor and run them in filename order: `20261018000000_initial_schema.sql`, then `20261018010000_page_wording.sql`.
+   - or paste each file into the SQL editor and run them in filename order: `20261018000000_initial_schema.sql`, `20261018010000_page_wording.sql`, `20261018020000_update_copy.sql`, then `20261025000000_blog.sql`.
+   - The last one also creates the photo storage bucket. Afterwards check **Storage** in Supabase: a bucket called `site-photos` should exist and be marked Public. If the blog migration fails on a `storage` error, tell whoever is helping you: that part could not be tested without a live project.
 3. Put the URL and publishable key in `.env`:
    ```
    VITE_SUPABASE_URL=https://<ref>.supabase.co
@@ -51,6 +52,7 @@ Commit the `.env` change and push to deploy it.
 1. **Home page** tab: paste the hero video link, edit the headline and line under it. (The three short "about" blocks under the hero are in the **Text** tab, group "Home page: about section".)
 2. **Sectors** tab: the three "Who we work with" cards.
 3. **Work** tab: **New event**, fill it in, tick **Published**, save. Then add photos, clips and videos to it.
+   **Blog** tab: **New post**, fill it in, upload or paste a cover, save, then add photos, clips and videos. Tick **Featured on Home** on the key posts (none ticked = Home shows the latest 3; any ticked = only those, up to 6). Tick **Published** to make it live. **Manage categories** sets the filter buttons.
 4. **Text** tab: rename any heading, button, form label or message. Empty box = standard wording. Press **Save changes** (one button for the whole tab).
 5. **Look & sections** tab: accent colours, hero darkness, and switches to hide menu links or sections.
 6. **Enquiries** tab: where contact form messages arrive.
